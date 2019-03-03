@@ -1,0 +1,28 @@
+key_trigger {
+  input: KEY_SPACE
+  action: "input_jump"
+}
+key_trigger {
+  input: KEY_LEFT
+  action: "input_left"
+}
+key_trigger {
+  input: KEY_RIGHT
+  action: "input_right"
+}
+key_trigger {
+  input: KEY_UP
+  action: "input_up"
+}
+key_trigger {
+  input: KEY_DOWN
+  action: "input_down"
+}
+key_trigger {
+  input: KEY_A
+  action: "input_a"
+}
+mouse_trigger {
+  input: MOUSE_BUTTON_1
+  action: "touch"
+}

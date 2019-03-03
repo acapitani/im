@@ -1,0 +1,34 @@
+local gamedata = require "main/gamedata"
+
+loaded_scene=""
+next_scene=""
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	
+	gamedata.new()
+	--loaded_scene="loader#test"
+	--loaded_scene = "loader#room"
+
+	gamedata.set_elevator_scene(1, 1, 1)
+	loaded_scene = "loader#elevator"
+	--gamedata.set_room_scene(6, 2, false)
+	--loaded_scene = "loader#room"
+		
+	msg.post(loaded_scene, "load")
+	--msg.post("@system:", "toggle_physics_debug")
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("proxy_loaded") then
+		msg.post(sender, "init")
+		msg.post(sender, "enable")
+	elseif message_id == hash("unload_scene") then
+		msg.post(loaded_scene, "disable")
+		msg.post(loaded_scene, "final")
+		msg.post(loaded_scene, "unload")
+	elseif message_id == hash("proxy_unloaded") then
+		loaded_scene=next_scene
+		msg.post(loaded_scene, "load")
+	end				
+end

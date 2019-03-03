@@ -1,0 +1,301 @@
+local gamedata = require "main/gamedata"
+local msg_move_lift = hash("move_lift")
+local msg_out_of_scene = hash("out_of_scene")
+
+local function build_robottriggers(self)
+	-- il tile self.empty_tile e' quello vuoto
+	tiles = {}
+	local trigger_index = 1
+	local x, y, w, h = tilemap.get_bounds("map#map")
+	local hlayer = hash("platform")
+	for y=1, h do
+		for x=1, w do
+			local tile = tilemap.get_tile("map#map", hlayer, x, y)
+			if tile==self.empty_tile then
+				-- verifico se il tile successivo e ~= self.empty_tile oppure se ci sono almeno 2 tile prima ed il precedente e' ~= self.empty_tile
+				if x<(w-1) and (tilemap.get_tile("map#map", hlayer, x+1, y)~=self.empty_tile) then  
+					local pos = vmath.vector3((x)*8, (y)*8, 0)
+					local id = factory.create("#robotriggerfactory", pos, nil, {})
+					self.robottriggers[trigger_index] = id
+					trigger_index = trigger_index + 1
+				elseif (x>self.empty_tile) and (tilemap.get_tile("map#map", hlayer, x-1, y)~=self.empty_tile) then
+					local pos = vmath.vector3((x-1)*8, (y)*8, 0)
+					local id = factory.create("#robotriggerfactory", pos, nil, {})
+					self.robottriggers[trigger_index] = id
+					trigger_index = trigger_index + 1
+				end
+			end
+		end
+	end
+end
+
+local function build_tilemap(self,filename)
+	local jsonstring = sys.load_resource(filename)
+	local data = json.decode(jsonstring)
+	local width = data.width
+	local height = data.height
+	local tile_height=data.tileheight
+	local tile_width=data.tilewidth
+	local layers= data["layers"]
+	level_minx=0
+	level_realmaxx=width*tile_width
+	level_maxx=level_realmaxx
+	for k, v in pairs(layers) do
+		local layer=v
+		local name=layer.name
+		local tiles=layer.data
+		local objects=layer.objects
+		if tiles and name=="platform" then
+			local hname=hash(name)
+			local x=0
+			local y=0
+			for idx, index in ipairs(tiles) do
+				if index==-1 then
+				else
+					tilemap.set_tile("map#map",hname,x+1,height-y,index)
+				end
+				x=x+1
+				if x == width then
+					x=0
+					y=y+1
+				end				
+			end
+		elseif objects then
+			local object_index = 1
+			local lift_index = 1
+			local robot_index = 1
+			local terminal_index = 1
+
+			for idx, obj in ipairs(objects) do
+				local name = obj.name
+				local type = obj.type
+				local ox = obj.x
+				local oy = obj.y
+				local pos = vmath.vector3(ox, height*tile_height-oy, 0.5)
+				if name=="terminal" then
+					local terminal_id = factory.create("#terminalfactory", pos, nil, {})
+					self.terminals[terminal_index] = terminal_id
+					terminal_index = terminal_index + 1
+				elseif name=="lift" then
+					local lift_id = factory.create("#liftfactory", pos, nil, {})
+					self.lifts[lift_index] = lift_id
+					lift_index = lift_index + 1
+				elseif name=="robot" then
+					pos.z = 0.7
+					local robot_id = factory.create("#robotfactory", pos, nil, {})
+					self.robots[robot_index] = robot_id
+					robot_index = robot_index + 1
+				elseif name=="roboball" then
+					pos.z = 0.7
+					local robot_id = factory.create("#roboballfactory", pos, nil, {})
+					self.robots[robot_index] = robot_id
+					robot_index = robot_index + 1
+				elseif name=="keypiano" then
+					local object_id = factory.create("#keypianofactory", pos, nil, {type=hash(name), id=object_index, room_id=self.room_number})
+					self.objects[object_index] = object_id
+					object_index = object_index+1
+				else
+					--todo!!! verificare se l'oggetto non esiste gia' nella globale
+					--nel caso esiste prendo i dati dalla globale e li passo nelle proprieta'
+					--se l'oggetto e' gia' stato analizzato allora non lo costruisco
+					--utilizzo l'id come chiave della table degli oggetti nel world object globale
+					--local id = (self.room_number*1000) + object_id
+					local object_id = factory.create("#objectfactory", pos, nil, {type=hash(name), id=object_index, room_id=self.room_number})
+					self.objects[object_index] = object_id
+					object_index = object_index+1
+				end
+			end
+			--[[
+			if name=="milestones" then
+				milestones={}
+				for idx, obj in ipairs(objects) do
+					local x=obj.x
+					local w=obj.width
+					local item={}
+					item.x=x+w/2
+					table.insert(milestones,item)
+				end
+				table.sort(milestones,function (a,b) return a.x<b.x end)
+			else
+				for idx, obj in ipairs(objects) do
+					local name=obj.name
+					local type=obj.type
+					local x=obj.x
+					local y=obj.y
+					local w=obj.width
+					local h=obj.height
+					local health=-1
+					local activationway=1
+					if obj.properties then
+						for p, prop in ipairs(obj.properties) do
+							if prop.name=="health" then
+								health=tonumber(prop.value)
+							elseif prop.name=="activation" then
+								activationway=tonumber(prop.value)
+							end
+						end
+					end
+					if type == "hero" then
+						local pos = vmath.vector3(x+w/2, height*tile_height-(y+h/2), 0)
+						go.set_position(pos,"/level/player")	
+						msg.post("/level/player", "resetcollision")		
+					elseif type == "villain" then
+						local pos = vmath.vector3(x+w/2, height*tile_height-(y+h/2), 0)
+						if name==nil or name=="" then name="dm" end
+						local villain=factory.create("#enemiesfactory",pos,nil,{id=1+#villains,maxhealth=health,name=hash(name),activationway=activationway,reachpos=0+#villains})
+						table.insert(villains,villain)
+					elseif type == "item" or type=='bonus' then
+						local pos = vmath.vector3(x+w/2, height*tile_height-(y+h/2), 0)
+						if name=="barrel" or name=="rocks1" then
+							local item=factory.create("#soliditemsfactory",pos,nil,{id=1+#soliditems,name=hash(name)})
+							table.insert(soliditems,item)
+						else
+							local item=factory.create("#itemsfactory",pos,nil,{id=1+#items,name=hash(name)})
+							table.insert(items,item)
+						end
+					end
+				end
+			end
+			]]
+		end
+	end
+end
+
+local function move_lift(self, lift_id, direction)
+	-- direction == true -> move up, direction == false -> move down
+	local x, y, w, h = tilemap.get_bounds("map#map")
+	local hlayer = hash("platform")
+	local move_y = 0
+	local pos = go.get_position(lift_id)
+	local tile_x = math.ceil(pos.x / 8)
+	local tile_y = math.ceil(pos.y / 8)
+	local tsx = tile_x - 2
+	local tdx = tile_x + 2
+	local step_y = -1
+	-- devo trovare un tile destinazione che ha a sx o dx almeno un appoggio con 2 tile pieni
+	if direction then
+		step_y = 1
+	end
+	tile_y = tile_y + step_y
+	while (tile_y>=1) and (tile_y<=h) do
+		if tilemap.get_tile("map#map", hlayer, tile_x, tile_y)==self.empty_tile then
+			if ((tsx>=2) and (tilemap.get_tile("map#map", hlayer, tsx, tile_y)~= self.empty_tile)) or ((tdx<=(w-2)) and (tilemap.get_tile("map#map", hlayer, tdx, tile_y)~= self.empty_tile)) then
+				move_y = tile_y * 8
+				break
+			end
+		else
+			break
+		end
+		tile_y = tile_y + step_y
+	end
+
+	if move_y ~= 0 then
+		move_y = move_y -4 
+		msg.post("player#player", "lift_moving")
+		msg.post(lift_id, "move", {to_y = move_y})
+	else
+		msg.post("player#player", "lift_stopped")
+	end
+end
+
+local function set_player_position(self)
+	local pos = go.get_position(go.get_id("player"))
+	if gamedata.player_roomentry.door_pos==1 then
+		pos.y = 165	
+	else
+		pos.y = 21
+	end
+	if gamedata.player_roomentry.door_dir then
+		pos.x = 304
+	else
+		pos.x = 8
+	end
+	msg.post("player#player", "player_direction", {direction=gamedata.player_roomentry.door_dir})
+	go.set_position(pos, go.get_id("player"))
+end
+
+--[[local function open_doors(self)
+	local room = gamedata.rooms[self.room_number]
+	if room.door_left~=nil then
+		if room.door_left.pos==2 then
+			msg.post("map#collisiondoor1", "disable")
+		end
+		if room.door_left.pos==1 then
+			msg.post("map#collisiondoor2", "disable")
+		end
+	end
+	if room.door_right~=nil then
+		if room.door_right.pos==2 then
+			msg.post("map#collisiondoor3", "disable")
+		end
+		if room.door_right.pos==1 then
+			msg.post("map#collisiondoor4", "disable")
+		end
+	end
+end]]
+
+function init(self)
+	self.lifts = {}
+	self.robots = {}
+	self.terminals = {}
+	self.objects = {}
+	self.robottriggers = {}
+	self.room_number = gamedata.current_room
+	self.empty_tile = 2
+	local name="room"..self.room_number
+	build_tilemap(self,"/assets/resources/rooms/"..name..".json")
+	build_robottriggers(self)
+	set_player_position(self)
+	--open_doors(self)
+	msg.post("main:/fader#fader", "open")
+end
+
+function final(self)
+	for idx, lift_id in ipairs(self.lifts) do
+		go.delete(lift_id)
+	end
+	for idx, robot_id in ipairs(self.robots) do
+		go.delete(robot_id)
+	end
+	for idx, terminal_id in ipairs(self.terminals) do
+		go.delete(terminal_id)
+	end
+	for idx, object_id in ipairs(self.objects) do
+		go.delete(object_id)
+	end
+	for idx, robottrigger_id in ipairs(self.robottriggers) do
+		go.delete(robottrigger_id)
+	end
+end
+
+function update(self, dt)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id==msg_move_lift and message.lift_id ~= nil then
+		move_lift(self, message.lift_id, message.direction)
+	elseif message_id==msg_out_of_scene then
+		local elevator_id = nil
+		local floor_id = nil
+		local tunnel_pos = 1
+		if message.playerpos.x<=0 then
+			tunnel_pos = 2
+			elevator_id = gamedata.rooms[gamedata.current_room].door_left.elevator
+			floor_id = gamedata.rooms[gamedata.current_room].door_left.floor
+		else
+			tunnel_pos = 0
+			elevator_id = gamedata.rooms[gamedata.current_room].door_right.elevator
+			floor_id = gamedata.rooms[gamedata.current_room].door_right.floor
+		end
+		if elevator_id~=nil then
+			gamedata.set_elevator_scene(elevator_id, floor_id, tunnel_pos)
+			next_scene = "loader#elevator"
+			msg.post("main:/fader#fader", "close")
+		end
+	end
+end
+
+function on_reload(self)
+end
+
+	

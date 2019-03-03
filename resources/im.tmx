@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="8" tileheight="8" infinite="0" nextlayerid="4" nextobjectid="19">
+ <tileset firstgid="1" source="im.tsx"/>
+ <layer id="1" name="platform" width="40" height="25" locked="1">
+  <data encoding="csv">
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,3,4,3,4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,4,3,4,3,4,3,4,3,4,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,4,3,4,3,4,3,4,3,4,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4,3,4,3,4,3,4,3,4,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,5,
+1,2,2,2,3,4,3,4,3,4,3,4,3,4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,4,3,4,3,4,3,4,3,4,5,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+4,2,2,2,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,2,2,2,3,4,3,4,3,4,3,4,3,4,3
+</data>
+ </layer>
+ <objectgroup id="3" name="objects">
+  <object id="7" gid="6" x="16" y="200" width="8" height="8">
+   <properties>
+    <property name="type" value="lift"/>
+   </properties>
+  </object>
+  <object id="8" gid="6" x="120" y="152" width="8" height="8">
+   <properties>
+    <property name="type" value="lift"/>
+   </properties>
+  </object>
+  <object id="9" gid="6" x="216" y="128" width="8" height="8">
+   <properties>
+    <property name="type" value="lift"/>
+   </properties>
+  </object>
+  <object id="11" name="terminal" x="56" y="192">
+   <properties>
+    <property name="type" value="terminal"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="12" name="robot" x="96" y="144">
+   <properties>
+    <property name="type" value="robot"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="13" name="robot" x="192" y="120">
+   <properties>
+    <property name="type" value="robot"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="14" name="robot" x="248" y="96">
+   <properties>
+    <property name="type" value="robot"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="15" name="robot" x="80" y="72">
+   <properties>
+    <property name="type" value="robot"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="16" name="printer" x="24" y="48">
+   <properties>
+    <property name="bag" type="int" value="0"/>
+    <property name="type" value="printer"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="17" name="mainframe" x="136" y="72">
+   <properties>
+    <property name="bag" type="int" value="0"/>
+    <property name="type" value="mainframe"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="18" name="dataunit" x="256" y="48">
+   <properties>
+    <property name="bag" type="int" value="0"/>
+    <property name="type" value="dataunit"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

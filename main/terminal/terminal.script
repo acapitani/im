@@ -1,0 +1,26 @@
+function init(self)
+	local size = go.get("#sprite", "size")
+	local pos = go.get_position()
+	pos.y = pos.y + (size.y/2)
+	go.set_position(pos)
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Remove this function if not needed
+end

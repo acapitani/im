@@ -1,0 +1,56 @@
+local gamedata = require "main/gamedata"
+
+local msg_open = hash("open")
+local msg_close = hash("close")
+
+local function on_fader_opened(self, node)
+	gamedata.in_game = true
+end
+
+local function on_fader_closed(self, node)
+	if next_scene~=nil then
+		msg.post("main:/loader#game", "unload_scene")
+	end
+end
+
+function init(self)
+	-- Add initialization code here
+	-- Remove this function if not needed
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	local topnode = gui.get_node("boxtop")
+	local bottomnode = gui.get_node("boxbottom")
+	if message_id==msg_open then
+		local toppos = vmath.vector3(0, 300, 0)
+		local bottompos = vmath.vector3(0, -100, 0)
+		gui.animate(topnode, "position.y", toppos, go.EASING_LINEAR, 1.0, 0.0, on_fader_opened)
+		gui.animate(bottomnode, "position.y", bottompos, go.EASING_LINEAR, 1.0)
+	elseif message_id==msg_close then
+		gamedata.in_game = false
+		local toppos = vmath.vector3(0, 150, 0)
+		local bottompos = vmath.vector3(0, 50, 0)
+		gui.animate(topnode, "position.y", toppos, go.EASING_LINEAR, 0.5, 0.0, on_fader_closed)
+		gui.animate(bottomnode, "position.y", bottompos, go.EASING_LINEAR, 0.5)
+	end
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add input-handling code here
+	-- Remove this function if not needed
+end

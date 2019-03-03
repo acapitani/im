@@ -1,0 +1,39 @@
+images {
+  image: "/main/object/images/dataunit.png"
+}
+images {
+  image: "/main/object/images/desk.png"
+}
+images {
+  image: "/main/object/images/drawers.png"
+}
+images {
+  image: "/main/object/images/jukebox.png"
+}
+images {
+  image: "/main/object/images/mainframe.png"
+}
+images {
+  image: "/main/object/images/printer.png"
+}
+images {
+  image: "/main/object/images/library.png"
+}
+images {
+  image: "/main/object/images/bed.png"
+}
+images {
+  image: "/main/object/images/lamp.png"
+}
+images {
+  image: "/main/object/images/candy.png"
+}
+images {
+  image: "/main/object/images/speaker.png"
+}
+images {
+  image: "/main/object/images/stereo.png"
+}
+margin: 0
+extrude_borders: 0
+inner_padding: 0

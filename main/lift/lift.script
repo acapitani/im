@@ -1,0 +1,50 @@
+local msg_move = hash("move")
+
+function init(self)
+	local size = go.get("#sprite", "size")
+	local pos = go.get_position()
+	pos.y = pos.y + (size.y/2)
+	pos.x = pos.x + 4
+	go.set_position(pos)
+	self.moving = false
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	--if self.moving then
+	if self.moving then
+		--print("lift: " .. go.get_position())
+	end
+	if false then
+		local player_pos = go.get_position(go.get_id("player"))
+		local pos = go.get_position()
+		pos.y = pos.y+18
+		pos.x = player_pos.x
+		pos.z = player_pos.z
+		go.set_position(pos, go.get_id("player"))
+	end
+end
+
+local function move_done(self, url, property)
+	msg.post("player#player", "lift_stopped", {lift_id=go.get_id()})
+	self.moving = false
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id==msg_move then
+		self.moving = true
+		local pos = go.get_position()
+		local timing = (math.abs(message.to_y-pos.y)/8)*0.1
+		go.animate(go.get_id("player"), "position.y", go.PLAYBACK_ONCE_FORWARD, message.to_y+16, go.EASING_LINEAR, timing, 0, move_done)
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, message.to_y, go.EASING_LINEAR, timing, 0, move_done)
+	end
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Remove this function if not needed
+end

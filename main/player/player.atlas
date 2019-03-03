@@ -1,0 +1,182 @@
+animations {
+  id: "idle"
+  images {
+    image: "/main/player/images/player01.png"
+  }
+  playback: PLAYBACK_NONE
+  fps: 15
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "run"
+  images {
+    image: "/main/player/images/player02.png"
+  }
+  images {
+    image: "/main/player/images/player03.png"
+  }
+  images {
+    image: "/main/player/images/player04.png"
+  }
+  images {
+    image: "/main/player/images/player05.png"
+  }
+  images {
+    image: "/main/player/images/player06.png"
+  }
+  images {
+    image: "/main/player/images/player07.png"
+  }
+  images {
+    image: "/main/player/images/player08.png"
+  }
+  images {
+    image: "/main/player/images/player09.png"
+  }
+  images {
+    image: "/main/player/images/player10.png"
+  }
+  images {
+    image: "/main/player/images/player11.png"
+  }
+  images {
+    image: "/main/player/images/player12.png"
+  }
+  images {
+    image: "/main/player/images/player13.png"
+  }
+  images {
+    image: "/main/player/images/player14.png"
+  }
+  images {
+    image: "/main/player/images/player15.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 15
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "jump"
+  images {
+    image: "/main/player/images/player17.png"
+  }
+  images {
+    image: "/main/player/images/player18.png"
+  }
+  images {
+    image: "/main/player/images/player19.png"
+  }
+  images {
+    image: "/main/player/images/player20.png"
+  }
+  images {
+    image: "/main/player/images/player21.png"
+  }
+  images {
+    image: "/main/player/images/player22.png"
+  }
+  images {
+    image: "/main/player/images/player23.png"
+  }
+  images {
+    image: "/main/player/images/player24.png"
+  }
+  images {
+    image: "/main/player/images/player25.png"
+  }
+  images {
+    image: "/main/player/images/player26.png"
+  }
+  images {
+    image: "/main/player/images/player27.png"
+  }
+  images {
+    image: "/main/player/images/player28.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 15
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "action"
+  images {
+    image: "/main/player/images/player16.png"
+  }
+  playback: PLAYBACK_NONE
+  fps: 15
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "fall"
+  images {
+    image: "/main/player/images/player15.png"
+  }
+  playback: PLAYBACK_NONE
+  fps: 15
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "jump1"
+  images {
+    image: "/main/player/images/player17.png"
+  }
+  images {
+    image: "/main/player/images/player18.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 15
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "jump2"
+  images {
+    image: "/main/player/images/player19.png"
+  }
+  images {
+    image: "/main/player/images/player20.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 15
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "jump3"
+  images {
+    image: "/main/player/images/player21.png"
+  }
+  images {
+    image: "/main/player/images/player22.png"
+  }
+  images {
+    image: "/main/player/images/player23.png"
+  }
+  images {
+    image: "/main/player/images/player24.png"
+  }
+  images {
+    image: "/main/player/images/player25.png"
+  }
+  images {
+    image: "/main/player/images/player26.png"
+  }
+  images {
+    image: "/main/player/images/player27.png"
+  }
+  images {
+    image: "/main/player/images/player28.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 15
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+margin: 0
+extrude_borders: 0
+inner_padding: 0

@@ -1,0 +1,15 @@
+images {
+  image: "/main/scenes/elevator/images/elevator-back.png"
+}
+images {
+  image: "/main/scenes/elevator/images/elevator-top.png"
+}
+images {
+  image: "/main/scenes/elevator/images/elevator-bottom.png"
+}
+images {
+  image: "/main/scenes/elevator/images/elevator-front.png"
+}
+margin: 0
+extrude_borders: 0
+inner_padding: 0

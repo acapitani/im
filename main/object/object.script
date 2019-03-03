@@ -1,0 +1,56 @@
+go.property("type", hash("printer"))
+go.property("bag", 0)
+go.property("timer", 10000)
+go.property("id", 0)
+go.property("room_id", 0)
+
+local htypes = {[hash("desk")]="desk", 
+[hash("jukebox")]="jukebox",
+[hash("mainframe")]="mainframe",
+[hash("drawers")]="drawers",
+[hash("dataunit")]="dataunit",
+[hash("printer")]="printer",
+[hash("library")]="library",
+[hash("bed")]="bed",
+[hash("lamp")]="lamp",
+[hash("candy")]="candy",
+[hash("speaker")]="speaker",
+[hash("stereo")]="stereo"}
+
+function init(self)
+	for h, val in pairs(htypes) do
+		-- msg.post("#desk_collision", "disable")
+		msg.post("#" .. val .. "_collision", "disable")	
+	end
+
+	local type = htypes[self.type]
+	if type ~= nil then
+		local url = msg.url("#sprite")
+		sprite.play_flipbook(url, type, nil)
+		msg.post("#" .. type .. "_collision", "enable")
+		local size = go.get("#sprite", "size")
+		local pos = go.get_position()
+		pos.y = pos.y + (size.y/2)
+		go.set_position(pos)
+	end
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Remove this function if not needed
+end

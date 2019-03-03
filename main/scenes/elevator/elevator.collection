@@ -1,0 +1,182 @@
+name: "elevator"
+instances {
+  id: "hud"
+  prototype: "/main/scenes/elevator/hud.go"
+  position {
+    x: 160.0
+    y: 40.0
+    z: 0.96
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "map"
+  prototype: "/main/scenes/elevator/map.go"
+  position {
+    x: 64.0
+    y: 16.0
+    z: 0.98
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "elevatormap"
+  prototype: "/main/scenes/elevator/elevatormap.go"
+  position {
+    x: 0.0
+    y: -1336.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "liftback"
+  prototype: "/main/scenes/elevator/liftback.go"
+  position {
+    x: 160.0
+    y: 136.0
+    z: 0.1
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "liftfront"
+  prototype: "/main/scenes/elevator/liftfront.go"
+  position {
+    x: 160.0
+    y: 152.0
+    z: 0.9
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "controller"
+  prototype: "/main/scenes/elevator/controller.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "player"
+  prototype: "/main/player/player.go"
+  position {
+    x: 160.0
+    y: 129.0
+    z: 0.8
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "lifttop"
+  prototype: "/main/scenes/elevator/lifttop.go"
+  position {
+    x: 160.0
+    y: 196.0
+    z: 0.95
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "liftbottom"
+  prototype: "/main/scenes/elevator/liftbottom.go"
+  position {
+    x: 160.0
+    y: -1332.0
+    z: 0.95
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+scale_along_z: 0

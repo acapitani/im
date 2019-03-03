@@ -1,0 +1,30 @@
+[bootstrap]
+main_collection = /main/main.collectionc
+render = /render/lowres.renderc
+
+[script]
+shared_state = 1
+
+[display]
+width = 960
+height = 600
+update_frequency = 30
+variable_dt = 0
+fullscreen = 0
+pixel_width = 320
+pixel_height = 200
+
+[project]
+title = IM
+custom_resources = /assets/resources/rooms/room1.json,/assets/resources/rooms/room2.json,/assets/resources/rooms/room3.json,/assets/resources/rooms/room4.json,/assets/resources/rooms/room5.json,/assets/resources/rooms/room6.json,/assets/resources/rooms/room7.json
+
+[graphics]
+default_texture_min_filter = nearest
+default_texture_mag_filter = nearest
+
+[physics]
+scale = 0.01
+debug_scale = 0.02
+world_count = 4
+debug = 0
+

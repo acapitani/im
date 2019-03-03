@@ -1,0 +1,111 @@
+go.property("model", hash("A"))		-- 0 = A, 1 = B, ...
+go.property("type", 0)		-- 0 = sentinel, 1 = seeker
+go.property("speed", 64)	-- pixel per second
+go.property("fire", 0)		-- fire every n seconds (0 disable fire)
+
+local hmodels = {[hash("A")]="A", 
+[hash("B")]="B",
+[hash("C")]="C",
+[hash("D")]="D",
+[hash("E")]="E",
+[hash("F")]="F"} 
+
+local state_sleep = 0
+local state_turn = 1
+local state_move = 2
+local state_fire = 3
+
+local msg_trigger_response = hash("trigger_response")
+local msg_animation_done = hash("animation_done")
+
+local group_robottrigger = hash("robottrigger")
+
+local function set_direction(self, direction)
+	sprite.set_hflip("#sprite", direction)
+	self.direction = direction
+end
+
+local function change_direction(self)
+	self.direction = not self.direction
+	sprite.set_hflip("#sprite", self.direction)
+end
+
+local function play_animation(self, animation)
+	local animation_id = hash(animation..hmodels[self.model])
+	if self.current_animation~=animation_id then
+		msg.post("#sprite", "play_animation", {id = animation_id})
+		self.current_animation = animation_id
+	end
+end
+
+local function set_state(self, state)
+	if state==state_sleep then
+		play_animation(self, "sleep")
+	elseif state==state_turn then
+		play_animation(self, "turn")
+	elseif state==state_move then
+		play_animation(self, "move")
+	elseif state==state_fire then
+		play_animation(self, "move")
+	end
+	self.state = state
+end
+
+function init(self)
+	self.current_animation = nil
+	self.turn_animation_id = hash("turn"..hmodels[self.model])
+	local r = math.random(1, 2)
+	if r==1 then
+		set_direction(self, true)
+	else
+		set_direction(self, false)
+	end
+	set_state(self, state_move)
+	local size = go.get("#sprite", "size")
+	local pos = go.get_position()
+	pos.y = pos.y + (size.y/2)
+	go.set_position(pos)
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	if dt<0.015 or dt>0.050 then
+		dt = 0.033
+	end
+	if self.state~=state_sleep then
+		if self.state==state_move then
+			local pos = go.get_position()
+			if self.direction then
+				pos.x = pos.x - dt*self.speed
+			else
+				pos.x = pos.x + dt*self.speed
+			end
+			if pos.x<=16 or pos.x>=300 then
+				change_direction(self)
+				set_state(self, state_turn)
+			else			
+				go.set_position(pos)
+			end
+		end
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == msg_trigger_response and message.group == group_robottrigger then
+		if message.enter then
+			change_direction(self)
+			set_state(self, state_turn)
+		end
+	elseif message_id==msg_animation_done and self.current_animation==self.turn_animation_id then
+		set_state(self, state_move)
+	end
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Remove this function if not needed
+end

@@ -1,0 +1,172 @@
+
+
+/scenes
+    /room
+        room.collection
+            tileset
+            tilemap
+            player.go
+            robot.factory
+            object.factory
+            lift.factory
+            controller.go  
+                room.script
+    /elevator
+        elevator.collection
+            player.go
+            ...
+            controller.go
+                elevator.script
+    /soundroom
+        ...
+	/test
+		...
+game.collection
+    loader.go
+        game.script
+        room.proxy
+        elevator.proxy
+        soundroom.proxy
+
+----------------
+game.script
+----------------
+-- global (screen)
+loaded_scene=""
+next_scene=""
+-- global (game)
+-- game_mode=0
+-- score = 0 
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	loaded_scene="loader#splash"
+
+	-- game_mode=2
+	-- loaded_scene="loader#ingame"
+	
+	msg.post(loaded_scene, "load")
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("proxy_loaded") then
+		msg.post(sender, "init")
+		msg.post(sender, "enable")
+	elseif message_id == hash("unload_scene") then
+		msg.post(loaded_scene, "disable")
+		msg.post(loaded_scene, "final")
+		msg.post(loaded_scene, "unload")
+    elseif message_id == hash("proxy_unloaded") then
+		loaded_scene=next_scene
+		msg.post(loaded_scene, "load")
+	end				
+end
+
+
+-- passare alla scena home
+	next_scene = "loader#home"
+	msg.post("game:/loader#game", "unload_scene")
+
+
+local name="room"..room_number
+createleveltilemap(self,"/assets/resources/rooms/"..name..".json")
+
+tiled -> salvare la tilemap in formato json sotto /assets/resources/rooms/room1.json
+
+game.project -> Custom Resources: /assets/resources/rooms/room1.json,...
+
+----------------
+room.script
+----------------
+function createleveltilemap(self,filename)
+	local jsonstring = sys.load_resource(filename)
+	local data = json.decode(jsonstring)
+	local width = data.width
+	local height = data.height
+	local tile_height=data.tileheight
+	local tile_width=data.tilewidth
+	local layers= data["layers"]
+	level_minx=0
+	level_realmaxx=width*tile_width
+	level_maxx=level_realmaxx
+	heropos = nil
+	msg.post("camera", "reset")
+	for k, v in pairs(layers) do
+		local layer=v
+		local name=layer.name
+		local tiles=layer.data
+		local objects=layer.objects
+		if tiles then
+			local hname=hash(name)
+			local x=0
+			local y=0
+			for idx, index in ipairs(tiles) do
+				if index==-1 then
+				else
+					tilemap.set_tile("map#level",hname,x+1,height-y,index)
+				end
+				x=x+1
+				if x == width then
+					x=0
+					y=y+1
+				end				
+			end
+		elseif objects then
+			if name=="milestones" then
+				milestones={}
+				for idx, obj in ipairs(objects) do
+					local x=obj.x
+					local w=obj.width
+					local item={}
+					item.x=x+w/2
+					table.insert(milestones,item)
+				end
+				table.sort(milestones,function (a,b) return a.x<b.x end)
+			else
+				for idx, obj in ipairs(objects) do
+					local name=obj.name
+					local type=obj.type
+					local x=obj.x
+					local y=obj.y
+					local w=obj.width
+					local h=obj.height
+					local health=-1
+					local activationway=1
+					if obj.properties then
+						for p, prop in ipairs(obj.properties) do
+							if prop.name=="health" then
+								health=tonumber(prop.value)
+							elseif prop.name=="activation" then
+								activationway=tonumber(prop.value)
+							end
+						end
+					end
+					if type == "hero" then
+						local pos = vmath.vector3(x+w/2, height*tile_height-(y+h/2), 0)
+						go.set_position(pos,"/level/player")	
+						msg.post("/level/player", "resetcollision")		
+					elseif type == "villain" then
+						local pos = vmath.vector3(x+w/2, height*tile_height-(y+h/2), 0)
+						if name==nil or name=="" then name="dm" end
+						local villain=factory.create("#enemiesfactory",pos,nil,{id=1+#villains,maxhealth=health,name=hash(name),activationway=activationway,reachpos=0+#villains})
+						table.insert(villains,villain)
+					elseif type == "item" or type=='bonus' then
+						local pos = vmath.vector3(x+w/2, height*tile_height-(y+h/2), 0)
+						if name=="barrel" or name=="rocks1" then
+							local item=factory.create("#soliditemsfactory",pos,nil,{id=1+#soliditems,name=hash(name)})
+							table.insert(soliditems,item)
+						else
+							local item=factory.create("#itemsfactory",pos,nil,{id=1+#items,name=hash(name)})
+							table.insert(items,item)
+						end
+					end
+				end
+			end
+		end
+	end
+	if milestones then
+		level_maxx=milestones[1].x
+	end
+	villainscount=#villains
+end
+
